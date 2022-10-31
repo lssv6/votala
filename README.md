@@ -1,2 +1,2 @@
 # votala
-VOTALA is an online pooling system
+VOTALA is an online polling system
