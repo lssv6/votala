@@ -1,0 +1,65 @@
+# version: "3.9"  # optional since v1.27.0
+services:
+  backend:
+    build: ./backend
+    entrypoint: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      - ../votala/backend:/usr/src/votala
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_started
+      # message_broker:
+      #   condition: service_healthy
+    links:
+      - message_broker
+
+    networks: ['votalanet']
+
+  database:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: votala
+      POSTGRES_PASSWORD: votala
+      POSTGRES_DB: postgres
+    networks: ['votalanet']
+  
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ../votala/frontend:/usr/share/nginx/html
+    depends_on:
+      backend:
+        condition: service_started
+
+    networks: ['votalanet']
+
+  # email_handler:
+  #   build: ./email_handler
+  #   entrypoint: ["python", "email_handler.py"]
+  #   volumes:
+  #     - ../votala/email_handler:/usr/src/email_handler
+  #   ports:
+  #     - "4369:4369"
+  #   depends_on:
+  #     - message_broker
+  # 
+  # message_broker:
+  #   image: rabbitmq:3.11.2-management-alpine
+  #   ports:
+  #     - "5672:5672"
+  #     - "8080:15672"
+  #   networks: ['votalanet']
+  #   healthcheck:
+  #       test: ["CMD", "wget", "http://0.0.0.0:15672", "-O", "-"]
+  #       interval: 1s
+  #       timeout: .5s
+  #       retries: 10
+
+networks: {votalanet : {}}
+

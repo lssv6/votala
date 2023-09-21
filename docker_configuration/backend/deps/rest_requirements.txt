@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+aiormq
+python-multipart
+python-jose
+passlib[bcrypt]
+

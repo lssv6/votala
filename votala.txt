@@ -1,0 +1,134 @@
+VOTALA is a website that we can create and vote in polls.
+
+Description of the whole project.
+
+Summary:
+  User Case & Actors:
+    *User
+    -List users of the platform
+    -Awnser a poll
+    -See poll result
+
+        *Anonymous user
+        - Create account.
+
+        *Logged user
+        -Create a poll
+        -Create a group
+        -Enter in a group
+            *Member of a group
+            -Awnser pool of the group
+                *Admin of a group
+                -Remove member
+                -Promove another member to adm.
+                -Add member
+
+For:
+    -Create account
+        Create a account using email. A invitation link will be sent to the email of the new user candidate.
+        After clicked in the registration link in the email (that after creation has a vality of only 2 hours), the account is automatically activated.
+          POST /users
+
+    -Create a group
+        If logged, the user can add another users to a group. The group can be composed of a minimal of 3 people.
+        The creator can allow another member/s to create pools.
+        Allowed members can span polls to the group to awnser.
+          POST /groups
+
+    -Enter in a group
+        A user can ask to enter in a existent group.
+          POST /groups/{group_id}/members
+
+        A user can enter in a link provided by the admin of the group.
+          An admin can forcefully add a user to be a member.
+            POST /groups/{group_id}/members
+
+    -Create a poll
+        In order to create a poll, a user(anonymous or not) MUST enter a poll title, a optional description, one option of the type check or two of the type radio or a textarea or a textfield.
+        There exists 2 major types of polls:
+            Anonymous polls.
+                Created by a user that can be anonymous or not.
+                Can be awnsered more than one time after creation by the same user.
+                  POST /polls
+
+            Logged polls.
+                Created by a logged user.
+                Can allow specific users to awnser.
+                  POST /groups/{group_id}/polls
+
+    -Awnser a poll
+        In a group.
+            A member can awnser a poll of the group.
+              PATCH /groups/{group_id}/polls{poll_id}
+
+        Being anonymous.
+            A anonymous user can awnser a poll that the anonymous users are allowed.
+              PATCH /polls/{poll_id}
+
+    -See poll result
+        In a group
+            Being a member of a group, the member can query the results after the pooling is finished (invalid).
+              GET /groups/{group_id}/polls/{poll_id}/result
+
+        Anonymous
+            Can query the result by the link of the poll or listing the poll in the big heap of anonymous polls.
+              GET /polls/{poll_id}/
+
+    - Remove member
+        Only a Admin can remove a member of a group.
+          DELETE /groups/{group_id}/members/{user_id}
+
+    - Promove member
+        Only a admin can remove a member of a group.
+          PATCH /groups/{group_id}/members/{user_id}
+
+    - Add member
+        Only a admin can add a member in a group.
+          POST /groups/{group_id}/members
+
+    - List users of the platform
+        All members of a group can query the members of the group.
+
+        GET /users <-- Dangereous requisition
+          GET /user-search <-- Use this instead
+        
+        List users of a specific group.
+          GET /groups/{group_id}/users
+
+    - Query public polls
+        GET /polls <-- Dangereous requisition
+          GET /polls-search <-- Use this instead
+
+    - Query informations about specific user.
+      GET /users/{user_id}
+
+    - Query informations anout a specific group.
+      GET /groups/group_id
+
+    - Query informations about a poll
+      GET /polls/{poll_id}
+      GET /groups/{group_id}
+
+In another words:
+
+  polling:
+    POST  /polls DONE
+    POST  /groups/{group_id}/polls
+    PATCH /groups/{group_id}/polls{poll_id}
+    GET   /groups/{group_id}/polls/{poll_id}/result
+    PATCH /polls/poll_id}
+    GET   /polls/{poll_id}
+    GET   /groups/{group_id}/
+
+  social:
+    POST   /users DONE
+    POST   /groups DONE
+    POST   /groups/{group_id}/members DONE
+    GET    /groups/{group_id}/members DONE
+    DELETE /groups/{group_id}/members/{user_id} DONE
+    PATCH  /groups/{group_id}/members/{user_id} DONE
+    GET    /users/{user_id} DONE
+    GET    /groups/{group_id} DONE
+    GET    /users/{user_id}/groups DONE
+
+

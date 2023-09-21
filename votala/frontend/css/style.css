@@ -1,0 +1,32 @@
+header{
+  text-align:center;
+}
+a{
+  text-decoration: none; 
+}
+
+button{
+  font-size: 2em;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: green;
+  border-style: solid;
+  background-color: lightyellow;
+}
+button:hover{
+  cursor: pointer;
+  size-adjust: 10%;
+}
+
+article{
+  display: flex;
+  justify-content: center;
+}
+
+#login-form{
+  display: inline-block;
+  padding: 1em;
+  border-radius: 0.5cm;
+  border-color: red;
+  border-style: dotted;
+}
+
