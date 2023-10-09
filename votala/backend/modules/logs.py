@@ -2,7 +2,7 @@ import logging
 
 from rich.console import Console
 from rich.logging import RichHandler
-from rich.traceback import install
+import rich.traceback
 
 FORMAT = "%(message)s"
 console = Console(width=200, color_system="standard", force_terminal=False)
@@ -25,6 +25,9 @@ logging.basicConfig(
     ],
 )
 
-install(console=console, show_locals=True)
+rich.traceback.install(console=console, show_locals=False)
 
-logger = logging.getLogger("votala")
+
+
+logger = logging.getLogger()
+

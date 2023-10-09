@@ -1,4 +1,4 @@
-FROM nginx:alpine AS base
+FROM nginx:1.25-alpine AS base
 
 RUN cp /usr/share/zoneinfo/America/Belem /etc/localtime
 
